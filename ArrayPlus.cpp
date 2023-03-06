@@ -83,39 +83,24 @@ int *aggiungiInPosizione(int base[], int lunghezza, int nuovo, int posizione)
 
 int trovaPosizione(int base[], int lunghezza, int cerca)
 {
-    int lunghezzaNuovo = lunghezza + 1;
-    int arrayNuovo[lunghezzaNuovo];
-
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
+    int trovaPosizione = 3;
+    int arrayNuovo[trovaPosizione];
+    for (int i = 0; i < trovaPosizione; i++)
         arrayNuovo[i] = base[i];
-    }
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        arrayNuovo[lunghezzaNuovo] = cerca;
-    }
+    for (int i = 0; i < lunghezza; i++)
+        if (base[i] == cerca)
+            arrayNuovo[trovaPosizione] = base[i];
+        else
+            arrayNuovo[trovaPosizione] = base[i] + 1;
+    for (int i = 0; i < trovaPosizione; i++)
+        base[i] = arrayNuovo[i];
+    return trovaPosizione;
 
-    cout<<endl<< "Trova posizione " << cerca << endl;
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        cout << arrayNuovo[i] << " ";
-    }
 
-    return 0;
 }
 
 int *aggiornaInPosizione(int base[], int lunghezza, int valore, int posizione) {
-    int aggiornaInPosizione = 0;
-    int lunghezzaNuovo = lunghezza + 1;
-    int arrayNuovo[lunghezzaNuovo];
-    for (int i = 0; i < lunghezzaNuovo; i++)
-        arrayNuovo[i] = base[i];
 
-    for (int i = 0; i < lunghezzaNuovo; i++)
-        arrayNuovo[i] = valore;
-
-    for (int i = 0; i < posizione; i++)
-        cout << arrayNuovo[i] << " ";
 
 }
 
@@ -129,8 +114,12 @@ int main()
     int lunghezzaBase = sizeof(arrayBase) / sizeof(arrayBase[0]);
     int numero = 8;
     int posizione=3;
+    int trovaposizione = 3;
     int *arrayNuovo = aggiungiInFondo(arrayBase, lunghezzaBase, numero);
     int *arrayNuovo2 = aggiungiInTesta(arrayBase, lunghezzaBase, numero);
     int* arrayNuovo3 = aggiungiInPosizione (arrayBase,lunghezzaBase, numero, posizione );
+
+
+
 }
 
