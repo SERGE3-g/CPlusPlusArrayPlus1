@@ -8,7 +8,7 @@
 using namespace std;
 
 // create
-int *aggiungiInFondo(int base[], int dim, int nuovo)
+int *aggiungiInFondo(int base[], int dim, int nuovo) 
 {
     int arrayRis[dim + 1];
     for (int i = 0; i < dim; i++)
