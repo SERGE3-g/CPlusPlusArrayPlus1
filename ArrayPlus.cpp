@@ -1,134 +1,165 @@
 //
-// Created by guea on 06/03/23.
+//
 //
 
 
 #include <iostream>
-
 using namespace std;
 
-// create
-int *aggiungiInFondo(int base[], int dim, int nuovo) 
-{
-    int arrayRis[dim + 1];
-    for (int i = 0; i < dim; i++)
-    {
-        arrayRis[i] = base[i];
-    }
-    arrayRis[dim] = nuovo;
-    cout << "Aggiungo in fondo " << nuovo << endl;
-    mostra(arrayRis, dim + 1);
-    return arrayRis;
-}
 
-int *aggiungiInTesta(int base[], int lunghezza, int nuovo)
-{
-    int lunghezzaNuovo = lunghezza + 1;
-    int arrayNuovo[lunghezzaNuovo];
+#include <iostream>
+// Create
+using namespace std;
 
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        arrayNuovo[0] = nuovo;
-    }
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        arrayNuovo[i+1] = base[i];
-    }
-    cout<<endl<< "Aggiungi in testa il numero "<< nuovo<< endl;
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        cout << arrayNuovo[i] << " ";
-    }
 
-    return arrayNuovo;
-}
-
-int *aggiungiInPosizione(int base[], int lunghezza, int nuovo, int posizione)
-{
-    int lunghezzaNuovo = lunghezza + 1;
-    int arrayNuovo[lunghezzaNuovo];
-
-    for (int i = 0; i < posizione; i++)
-    {
-        arrayNuovo[i] = base[i];
-    }
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        arrayNuovo[posizione] = nuovo;
-    }
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        arrayNuovo[posizione+1] = base[i];
-    }
-
-    cout<<endl<< "Aggiungi in posizione "<< posizione << " il numero "<< nuovo<< endl;
-    for (int i = 0; i < lunghezzaNuovo; i++)
-    {
-        cout << arrayNuovo[i] << " ";
-    }
-
-    return arrayNuovo;
-}
-
-int trovaPosizione(int base[], int dim, int cerca) 
+void stampa(int base[], int dim)
 {
     for (int i = 0; i < dim; i++)
     {
-        if (base[i] == cerca)
-        {
-            return i + 1;
+        cout << base[i] << " ";
+    }
+    cout << endl;
+}
+
+// Create
+int *aggiungiInFondo(int base[], int dim, int elemento)
+{
+    int* risultato = new int[dim + 1];
+
+    for( int i=0; i<dim; i++){ //copia l'array base in risultato
+        risultato[i]=base[i];
+    }
+
+    risultato[dim]=elemento; //aggiunge l'elemento in fondo
+
+    return risultato;
+}
+int *aggiungiInTesta(int base[], int dim, int elemento)
+{
+    int* risultato = new int[dim + 1];
+
+    risultato[0]=elemento; //aggiunge l'elemento in testa
+
+    for(int i=1; i<dim+1; i++){ //copia l'array base in risultato
+        risultato[i]=base[i-1];
+    }
+
+    // todo
+    return risultato;
+}
+
+int *aggiungiInPosizione(int base[], int dim, int elemento, int posizione = 0)
+{
+    if(posizione == 0){
+        int* p = aggiungiInTesta(base, dim, elemento);
+        return p;
+    }
+    else if(posizione == dim){
+        int* p = aggiungiInFondo(base, dim, elemento);
+        return p;
+    }
+    else{
+        int* risultato = new int[dim + 1];
+
+        for(int i=0; i<posizione; i++){ //copia l'array base in risultato
+            risultato[i]=base[i];
+        }
+
+        risultato[posizione]=elemento; //aggiunge l'elemento in posizione
+
+        for(int i=posizione+1; i<dim+1; i++){ //copia l'array base in risultato
+            risultato[i]=base[i-1];
+        }
+
+        return risultato;
+    }
+}
+
+// Read
+/*
+Trova la posizione di un elemento in un array
+@param base[] array di interi
+@param dim dimensione dell'array
+@param cerca elemento da cercare
+@return posizione dell'elemento cercato, -1 se non trovato
+*/
+int trovaPosizione(int base[], int dim, int cerca)
+{
+    for(int i=0; i<dim; i++){
+        if(base[i]==cerca){
+            return i;
         }
     }
     return -1;
-
 }
 
-int *aggiornaInPosizione(int base[], int dim, int valore, int posizione) 
+// Update
+int *aggiornaInPosizione(int base[], int dim, int valore, int posizione)
 {
-    if (posizione > dim)
-    {
-        cout << "La posizione si trova al di fuori dell'array";
-        return base;
-    }
-    else
-    {
-        int arrayRis[dim];
-        for (int i = 0; i < posizione - 1; i++)
-        {
-            arrayRis[i] = base[i];
+    int* risultato = new int[dim];
+    for(int i=0; i<dim; i++){
+        if(i==posizione){
+            risultato[i]=valore;
         }
-        arrayRis[posizione - 1] = valore;
-        for (int i = posizione; i < dim; i++)
-        {
-            arrayRis[i] = base[i];
+        else{
+            risultato[i]=base[i];
         }
-        mostra(arrayRis, dim);
-        return arrayRis;
     }
+    return risultato;
+
 }
 
-
-int *rimuovi(int base[], int lunghezza, int indice)
+int *rimuovi(int base[], int dim, int posizione) //rimuove un elemento in una posizione
 {
+    int* risultato = new int[dim - 1];
+
+    for (int i = 0; i < posizione; i++) // PRIMA PARTE
+    {
+        risultato[i] = base[i];
+    }
+
+    for (int i = posizione; i < dim - 1; i++) //SECONDA PARTE
+    {
+        risultato[i] = base[i + 1];
+    }
+    return risultato;
 }
+
+int *deleteAllArray(int base[], int dim ,int posizione)  //rimuove tutti gli elementi in una posizione
+{
+    int* risultato = new int[dim - 1];
+    int count = 0;
+    for (int i = 0; i < dim; i++)
+    {
+        if (base[i] != posizione)
+        {
+            risultato[count] = base[i];
+            count++;
+        }
+
+    }
+    return risultato;
+}
+
 
 int main()
 {
-    
-    int base[] = {6, 8, 7, 8, 8, 9};
-    int dim = sizeof(base) / sizeof(base[0]);
-    int nuovo = 11;
-    int posizione = 3;
-    int daTrovare = 8;
-    int *array1 = aggiungiInFondo(base, dim, nuovo);
-    cout << endl;
-     int *array2 = aggiungiInTesta(base, dim, nuovo);
-     cout << endl;
-     int *array3 = aggiungiInPosizione(int base[], int lunghezza, int nuovo, int posizione);
-     cout << endl;
-     cout << "Elemento " << daTrovare << " si trova in posizione " << trovaPosizione(base, dim, daTrovare) << endl;
-     cout << endl;
-    int *array4 = aggiornaInPosizione(base, dim, nuovo, posizione);
-     cout << endl;
+
+    int input[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int dim = sizeof(input) / sizeof(input[0]);
+    int elemento = 13;
+    int cerca = 5;
+    int posizione = 5;
+    int deleteAll = 10;
+
+    stampa(input, dim);
+
+    int* p = aggiungiInFondo(input, dim, elemento);
+
+    stampa(p, dim + 1);
+    deleteAllArray(p, dim + 1, deleteAll);
+    stampa(p, dim + 1);
+    delete[] p;
+
     return 0;
 }
